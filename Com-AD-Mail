@@ -1,0 +1,21 @@
+#initalize variables 
+$computername = read-host "Enter Computer name" 
+$SAMAccount = Name read-host "SAM account name" 
+$OU = "america.htc.com
+ 
+#new computer setup
+New-ADComputer -Name "HRCOMPUTER" -SamAccountName "HRCOMPUTER" -Path "OU=America.htc.com,DC=domain,DC=local"
+
+#Create Mailbox/AD...
+$password = Read-Host "Enter password" -AsSecureString
+New-Mailbox -UserPrincipalName chris@contoso.com -Alias chris 
+-Database "Mailbox Database 1" -Name ChrisAshton -OrganizationalUnit Users 
+-Password $password -FirstName Chris -LastName Ashton -DisplayName "Chris Ashton" 
+-ResetPasswordOnNextLogon $true
+
+#Add to groups
+$Groups = 'group1','group2','group3','group4'
+$Username = 'newemployee'
+foreach ($Group in $Groups) {
+Add-AdGroupMember -Identity $Group -Members $Username
+}
